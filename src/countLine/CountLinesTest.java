@@ -7,75 +7,92 @@ import java.io.FileReader;
 /**
  * 
  * <p>
- * 浠ｇ����璁＄袄1�7/p>
+ * Code line counter
+ * </p>
  * <p>
- * 杩�����璁＄����1�7���唬���锛����锛�java .xml .jsp ��ￄ1�7 绫诲ￄ1�7
- * 缁��src涓����欢澶�1�7�唬����ￄ1�7 锛������界�璁�rc浠ュ����浠跺す锛�ncluding
- * other source folder like test锛�
+ * Run this class you will see the result
  * </p>
  * 
- * Project: Zpos_2.0.0 Copyright: @���杈版�淇℃����������
- * 
  * @version 1.0
- * @author Ye_WD 2012-10-16
+ * @author Ye_WD
+ * @date 2012-10-16
+ * 
+ * @date 2016-11-04
+ *       <p>
+ *       Extract path and file types as configurable arguments.
+ *       </p>
  * 
  */
 public class CountLinesTest {
+
+    // Arguments
+    public static String path = "C:\\Users\\Administrator\\workspace\\spring_boot_test_1";
+    public static String[] fileTypes = { "java", "xml" };
 
     private CountLinesTest() {
 
     }
 
-    /**
-     * ����规�
-     * 
-     * @throws Exception
-     */
     public static void countClassDirLines(String className) throws Exception {
 
-        // 椤圭���欢澶�
+        // System path
         String project = System.getProperty("user.dir");
 
-        // 绫绘�浠跺す
+        // get current project path
         String classPath = className.substring(0, className.lastIndexOf('.'));
         classPath = classPath.replace('.', '/');
 
-        String path = project + "/src/" + classPath;
+        String thisPath = project + "/src/" + classPath;
+
+        if (path == null || "".equals(path)) {
+            path = thisPath;
+        }
 
         System.out.println(path);
-        File f = new File(path);
-        countLines(f);
+        File root = new File(path);
+        countLines(root);
     }
 
-    /** 绋�ￄ1�7 */
+    /** Code */
     static long normalLines = 0;
 
-    /** 娉ㄩￄ1�7 */
+    /** Comment */
     static long commentLines = 0;
 
-    /** 绌虹ￄ1�7 */
+    /** Space */
     static long whiteLines = 0;
 
     public static void main(String[] args) throws Exception {
-        // �峰�褰��java��欢璺�����寮ￄ1�7
-        // System.out.println(new File("").getCanonicalPath());
-        // //�峰������矾寰ￄ1�7
-        // 椤圭�缁��
-//        String path = System.getProperty("user.dir");
-        String path = "/home/projects/UnderstandingJVM";
         System.out.println(path);
         countLines(new File(path));
     }
 
+    /**
+     * Convert an array to some string regex, for instance,
+     * ".*\\.java$||.*\\.js$||.*\\.jsp$"
+     * 
+     * @param fileTypes
+     * @return fileType regex
+     */
+    public static String convertFileTypesToRegex(String[] fileTypes) {
+        StringBuilder regex = new StringBuilder();
+        for (int i = 0; i < fileTypes.length; i++) {
+            if (i == fileTypes.length - 1) {
+                regex.append(".*\\.").append(fileTypes[i]).append("$");
+            } else {
+                regex.append(".*\\.").append(fileTypes[i]).append("$||");
+            }
+        }
+        System.out.println(regex.toString());
+        return regex.toString();
+    }
+
     private static void countLines(File file) throws Exception {
 
-        // File[] codeFiles= file.listFiles();
-        File[] codeFiles = IOUtil.findByRegex(file, "" + ".*\\.java$||"
-                + ".*\\.js$||" + ".*\\.jsp$");
+        File[] codeFiles = IOUtil.findByRegex(file,
+                convertFileTypesToRegex(fileTypes));
         for (File child : codeFiles) {
-            // if(child.getName().matches(".*\\.java$")){
             parse(child);
-            // }
         }
         System.out.println("Code:    " + normalLines);
         System.out.println("Comment: " + commentLines);
@@ -88,8 +105,8 @@ public class CountLinesTest {
         boolean comment = false;
         while ((line = in.readLine()) != null) {
             line = line.trim(); //
-            if (line.matches("^[\\s&&[^\\n]]*$")
-                    || line.equals("{") || line.equals("}")) {
+            if (line.matches("^[\\s&&[^\\n]]*$") || line.equals("{")
+                    || line.equals("}")) {
                 // System.out.println(line);
                 whiteLines++;
             } else if (line.startsWith("<!--") && !line.endsWith("-->")) {

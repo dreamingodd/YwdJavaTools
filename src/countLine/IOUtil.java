@@ -10,13 +10,12 @@ import java.util.Collections;
 /**
  * 
  * <p>
- * IO工具類
+ * IO工具类
  * </p>
  * <p>
  * IO工具
  * </p>
  * 
- * Project: Zpos_2.0.0 Copyright: @杭州辰林信息技术有限公司
  * 
  * @version 1.0
  * @author Ye_WD 2012-10-16
