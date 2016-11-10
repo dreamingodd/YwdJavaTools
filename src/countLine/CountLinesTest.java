@@ -10,7 +10,7 @@ import java.io.FileReader;
  * Code line counter
  * </p>
  * <p>
- * Run this class you will see the result
+ * Run this class you will see the result.
  * </p>
  * 
  * @version 1.0
@@ -21,13 +21,19 @@ import java.io.FileReader;
  *       <p>
  *       Extract path and file types as configurable arguments.
  *       </p>
+ * @date 2016-11-04
+ *       <p>
+ *       Extract path and file types as configurable arguments.
+ *       </p>
  * 
  */
 public class CountLinesTest {
 
     // Arguments
-    public static String path = "C:\\Users\\Administrator\\workspace\\spring_boot_test_1";
+    // public static String path = "C:\\Users\\Administrator\\workspace\\spring_boot_test_1";
+    public static String path = "E:\\project\\seckill";
     public static String[] fileTypes = { "java", "xml" };
+    public static String[] exclusions = { "seckill\\.idea", "seckill\\target" };
 
     private CountLinesTest() {
 
@@ -63,7 +69,7 @@ public class CountLinesTest {
     static long whiteLines = 0;
 
     public static void main(String[] args) throws Exception {
-        System.out.println(path);
+        System.out.println("Position:" + path);
         countLines(new File(path));
     }
 
@@ -83,16 +89,23 @@ public class CountLinesTest {
                 regex.append(".*\\.").append(fileTypes[i]).append("$||");
             }
         }
-        System.out.println(regex.toString());
+        System.out.println("Regex:   " + regex.toString());
         return regex.toString();
     }
 
     private static void countLines(File file) throws Exception {
 
-        File[] codeFiles = IOUtil.findByRegex(file,
-                convertFileTypesToRegex(fileTypes));
+        File[] codeFiles = IOUtil.findByRegex(file, convertFileTypesToRegex(fileTypes));
         for (File child : codeFiles) {
-            parse(child);
+            boolean excluded = false;
+            for (String exStr : exclusions) {
+                if (child.getAbsolutePath().contains(exStr)) {
+                    excluded = true;
+                }
+            }
+            if (!excluded) {
+                parse(child);
+            }
         }
         System.out.println("Code:    " + normalLines);
         System.out.println("Comment: " + commentLines);
@@ -105,8 +118,7 @@ public class CountLinesTest {
         boolean comment = false;
         while ((line = in.readLine()) != null) {
             line = line.trim(); //
-            if (line.matches("^[\\s&&[^\\n]]*$") || line.equals("{")
-                    || line.equals("}")) {
+            if (line.matches("^[\\s&&[^\\n]]*$") || line.equals("{") || line.equals("}")) {
                 // System.out.println(line);
                 whiteLines++;
             } else if (line.startsWith("<!--") && !line.endsWith("-->")) {
@@ -122,8 +134,7 @@ public class CountLinesTest {
                 comment = true;
             } else if (true == comment) {
                 commentLines++;
-                if (line.endsWith("*/") || line.endsWith("-->")
-                        || line.endsWith("--%>")) {
+                if (line.endsWith("*/") || line.endsWith("-->") || line.endsWith("--%>")) {
                     comment = false;
                 }
             } else if (line.startsWith("//")) {
