@@ -31,9 +31,14 @@ public class CountLinesTest {
 
     // Arguments
     // public static String path = "C:\\Users\\Administrator\\workspace\\spring_boot_test_1";
-    public static String path = "E:\\project\\seckill";
-    public static String[] fileTypes = { "java", "xml" };
-    public static String[] exclusions = { "seckill\\.idea", "seckill\\target" };
+//    public static String path = "E:\\project\\choosefine_market";
+    public static String path = "E:\\project\\choosefine_market\\shopping\\src\\main";
+//    public static String path = "E:\\project\\choosefine_market\\shopping\\src\\test\\java\\com\\choosefine\\shopping\\merchandise";
+//    public static String path = "E:\\project_research\\liquibase";
+//    public static String path = "E:\\project\\choosefine_base";
+    public static String[] fileTypes = { "java", "xml", "sql" };
+    public static String[] exclusions = { "seckill\\.idea", "seckill\\target", "target", "model" };
+    public static boolean showCountedFile = false;
 
     private CountLinesTest() {
 
@@ -104,14 +109,22 @@ public class CountLinesTest {
                 }
             }
             if (!excluded) {
+                if (showCountedFile) {
+                    System.out.println(child.getAbsolutePath());
+                }
                 parse(child);
             }
         }
+        showFileCount();
         System.out.println("Code:    " + normalLines);
         System.out.println("Comment: " + commentLines);
         System.out.println("Space:   " + whiteLines);
     }
 
+    private static void showFileCount() {
+        
+    }
+    
     private static void parse(File f) throws Exception {
         BufferedReader in = new BufferedReader(new FileReader(f));
         String line = "";
