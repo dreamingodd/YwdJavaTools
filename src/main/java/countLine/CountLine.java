@@ -27,61 +27,37 @@ import java.io.FileReader;
  *       </p>
  * 
  */
-public class CountLinesTest {
+public class CountLine {
 
-    // Arguments
-    // public static String path = "C:\\Users\\Administrator\\workspace\\spring_boot_test_1";
-//    public static String path = "E:\\project\\choosefine_market";
-    public static String path = "C:\\Development\\project\\github\\YwdJavaTools";
-//    public static String path = "E:\\project\\choosefine_market\\shopping\\src\\test\\java\\com\\choosefine\\shopping\\merchandise";
-//    public static String path = "E:\\project_research\\liquibase";
-//    public static String path = "E:\\project\\choosefine_base";
-    public static String[] fileTypes = { "java", "xml", "sql" };
-    public static String[] exclusions = { "target", "model", ".idea" };
-    public static boolean showCountedFile = false;
+    private static String position;
 
-    private CountLinesTest() {
-
-    }
-
-    public static void countClassDirLines(String className) throws Exception {
-
-        // System path
-        String project = System.getProperty("user.dir");
-
-        // get current project path
-        String classPath = className.substring(0, className.lastIndexOf('.'));
-        classPath = classPath.replace('.', '/');
-
-        String thisPath = project + "/src/" + classPath;
-
-        if (path == null || "".equals(path)) {
-            path = thisPath;
-        }
-
-        System.out.println(path);
-        File root = new File(path);
-        countLines(root);
-    }
+    private static String regexString;
 
     /** Code */
-    static long normalLines = 0;
+    private static long normalLines = 0;
 
     /** Comment */
-    static long commentLines = 0;
+    private static long commentLines = 0;
 
     /** Space */
-    static long whiteLines = 0;
+    private static long whiteLines = 0;
+
+    private CountLine() {
+
+    }
 
     public static void main(String[] args) throws Exception {
-        System.out.println("Position:" + path);
-        countLines(new File(path));
+        countLines(new PropertyUtil());
+        System.out.println("Position:" + position);
+        System.out.println("Regex:   " + regexString);
+        System.out.println("Code:    " + normalLines);
+        System.out.println("Comment: " + commentLines);
+        System.out.println("Space:   " + whiteLines);
     }
 
     /**
      * Convert an array to some string regex, for instance,
      * ".*\\.java$||.*\\.js$||.*\\.jsp$"
-     * 
      * @param fileTypes
      * @return fileType regex
      */
@@ -94,31 +70,29 @@ public class CountLinesTest {
                 regex.append(".*\\.").append(fileTypes[i]).append("$||");
             }
         }
-        System.out.println("Regex:   " + regex.toString());
+        regexString = regex.toString();
         return regex.toString();
     }
 
-    private static void countLines(File file) throws Exception {
-
-        File[] codeFiles = IOUtil.findByRegex(file, convertFileTypesToRegex(fileTypes));
+    private static void countLines(PropertyUtil propertyUtil) throws Exception {
+        position = propertyUtil.getPath();
+        File file = new File(position);
+        File[] codeFiles = IOUtil.findByRegex(file, convertFileTypesToRegex(propertyUtil.getFileTypes()));
         for (File child : codeFiles) {
             boolean excluded = false;
-            for (String exStr : exclusions) {
+            for (String exStr : propertyUtil.getExclusions()) {
                 if (child.getAbsolutePath().contains(exStr)) {
                     excluded = true;
                 }
             }
             if (!excluded) {
-                if (showCountedFile) {
+                if (propertyUtil.isShowCountedFile()) {
                     System.out.println(child.getAbsolutePath());
                 }
                 parse(child);
             }
         }
         showFileCount();
-        System.out.println("Code:    " + normalLines);
-        System.out.println("Comment: " + commentLines);
-        System.out.println("Space:   " + whiteLines);
     }
 
     private static void showFileCount() {
