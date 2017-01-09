@@ -50,11 +50,6 @@ public class CountLine {
 
     public static void main(String[] args) throws Exception {
         countLines(new PropertyUtil());
-        System.out.println("Position:" + position);
-        System.out.println("Regex:   " + regexString);
-        System.out.println("Code:    " + normalLines);
-        System.out.println("Comment: " + commentLines);
-        System.out.println("Space:   " + whiteLines);
         logger.info("Position:" + position);
         logger.info("Regex:   " + regexString);
         logger.info("Code:    " + normalLines);
