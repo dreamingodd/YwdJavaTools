@@ -33,6 +33,8 @@ public class CountLine {
 
     private static String regexString;
 
+    private static Logger logger = new Logger();
+
     /** Code */
     private static long normalLines = 0;
 
@@ -53,6 +55,11 @@ public class CountLine {
         System.out.println("Code:    " + normalLines);
         System.out.println("Comment: " + commentLines);
         System.out.println("Space:   " + whiteLines);
+        logger.info("Position:" + position);
+        logger.info("Regex:   " + regexString);
+        logger.info("Code:    " + normalLines);
+        logger.info("Comment: " + commentLines);
+        logger.info("Space:   " + whiteLines);
     }
 
     /**
