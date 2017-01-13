@@ -34,4 +34,8 @@ public class Logger {
         writer.close();
     }
 
+    public void info()throws IOException {
+        info("");
+    }
+
 }

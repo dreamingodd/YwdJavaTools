@@ -12,7 +12,7 @@ import java.io.FileReader;
  * <p>
  * Run this class you will see the result.
  * </p>
- * 
+ *
  * @version 1.0
  * @author Ye_WD
  * @date 2012-10-16
@@ -55,6 +55,7 @@ public class CountLine {
         logger.info("Code:    " + normalLines);
         logger.info("Comment: " + commentLines);
         logger.info("Space:   " + whiteLines);
+        logger.info();
     }
 
     /**
