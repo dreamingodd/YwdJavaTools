@@ -29,11 +29,11 @@ import java.io.FileReader;
  */
 public class CountLine {
 
-    private static String position;
-
     private static String regexString;
 
     private static Logger logger = new Logger();
+
+    private static String position;
 
     /** Code */
     private static long normalLines = 0;
@@ -96,6 +96,9 @@ public class CountLine {
             }
         }
         showFileCount();
+        System.out.println("Code:    " + normalLines);
+        System.out.println("Comment: " + commentLines);
+        System.out.println("Space:   " + whiteLines);
     }
 
     private static void showFileCount() {
