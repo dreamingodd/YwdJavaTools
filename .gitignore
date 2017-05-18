@@ -1,9 +1,7 @@
 .idea
-*.iml
-target
+/target
 build.xml
 build/
 manifest.mf
 nbproject/
-properties.properties
 *.log
