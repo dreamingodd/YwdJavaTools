@@ -5,3 +5,5 @@ build/
 manifest.mf
 nbproject/
 *.log
+tool.iml
+src/main/resources/properties.properties
