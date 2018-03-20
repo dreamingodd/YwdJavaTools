@@ -1,4 +1,4 @@
-package me.ywd;
+package rename;
 
 import java.io.File;
 
@@ -14,7 +14,7 @@ public class RenameFilesInFolder {
 //    private static String rootName = "N:\\download";
 //    private static String rootName = "F:\\CNTV\\ccccc";
 //    private static String rootName = "F:\\new";
-  private static String rootName = "N:\\Series\\Adult Video\\2018_1";
+  private static String rootName = "N:\\Series\\Adult Video\\2018_2";
 
     private static String[] renameType = {"avi", "mkv", "mp4", "rmvb", "wmv"};
 
