@@ -14,11 +14,18 @@ public class RenameFilesInFolder {
 //    private static String rootName = "N:\\download";
 //    private static String rootName = "F:\\CNTV\\ccccc";
 //    private static String rootName = "F:\\new";
-  private static String rootName = "N:\\Series\\Adult Video\\2018_2";
+    private static String rootName = "S:\\downloads";
 
     private static String[] renameType = {"avi", "mkv", "mp4", "rmvb", "wmv"};
 
     public static void main(String[] args) {
+
+        rename();
+//        move();
+    }
+
+    private static void rename() {
+
         File root = new File(rootName);
         for (File folder : root.listFiles()) {
             boolean downloadCompleted = true;
@@ -29,18 +36,31 @@ public class RenameFilesInFolder {
                     }
                 }
                 if (downloadCompleted) {
-                    int renamed = 0;
+                    int count = 0;
                     for (File file : folder.listFiles()) {
                         if (isRenameTarget(file.getName())) {
-                            if (renamed == 0) {
+                            if (count == 0) {
                                 file.renameTo(new File(getPathWithoutFileName(file.getPath()) + "\\"
                                         + folder.getName() + "." + getType(file.getName())));
                             } else {
                                 file.renameTo(new File(getPathWithoutFileName(file.getPath()) + "\\"
-                                        + folder.getName() + renamed + "." + getType(file.getName())));
+                                        + folder.getName() + count + "." + getType(file.getName())));
                             }
-                            renamed++;
+                            count++;
                         }
+                    }
+                }
+            }
+        }
+    }
+
+    private static void move() {
+        File root = new File(rootName);
+        for (File folder : root.listFiles()) {
+            if (folder.isDirectory()) {
+                for (File file : folder.listFiles()) {
+                    if (isRenameTarget(file.getName())) {
+                        file.renameTo(new File(getPathWithoutFileName(folder.getPath()) + "\\" + file.getName()));
                     }
                 }
             }
