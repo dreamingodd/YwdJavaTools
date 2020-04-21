@@ -8,9 +8,9 @@ import java.io.File;
  */
 public class ReplaceNameInFolder {
 
-    private static String rootName = "D:\\Game\\1.Skills\\PES\\C.S.斯匡诺尔\\test";
-    private static String preText = "2013";
-    private static String newText = "2014";
+    private static String rootName = "D:\\Game\\1.Skills\\PES\\C.S.斯匡诺尔\\I-20";
+    private static String preText = "z";
+    private static String newText = "辶";
 
     public static void main(String[] args) {
         rename(preText, newText);
