@@ -10,7 +10,7 @@ public class TextBlocks {
                 <html>
                     <body>
                         <p>YYTES</p>
-                    </body>
+                    </body>0
                 </html>""";
         System.out.println(html);
     }
