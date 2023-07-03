@@ -1,54 +1,60 @@
 package rename;
 
+import countLine.PropertyUtil;
+import org.apache.commons.io.FileUtils;
+
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class SplitFilesInFolder {
 
 
-    //    private static String rootName = "N:\\download";
-//    private static String rootName = "F:\\CNTV\\ccccc";
-//    private static String rootName = "F:\\new";
-    private static String rootName = "D:\\git\\test\\facetest3 - 4 - 副本 (3)";
 
-    private static String[] renameType = {"avi", "mkv", "mp4", "rmvb", "wmv"};
-
-    public static void main(String[] args) {
-        rename();
-//        move();
+    public static void main(String[] args) throws IOException {
+        split();
     }
 
-    private static void rename() {
+    private static void split() throws IOException {
 
-        File root = new File(rootName);
-        File greenFolder = new File(rootName + "\\green");
-        File blackFolder = new File(rootName + "\\black");
-        System.out.println(greenFolder.getPath());
-        System.out.println(blackFolder.getPath());
-        greenFolder.mkdir();
-        blackFolder.mkdir();
+
+        PropertyUtil propertyUtil = new PropertyUtil();
+        String[] fileTypesStrings = propertyUtil.getFileTypes();
+        String rootPath = propertyUtil.getSplitFolder();
+
+        backup(rootPath);
+
+        int barCount = propertyUtil.getBarCount();
+
+        System.out.println("target          : " + rootPath);
+        System.out.println("Folders up to   : " + barCount);
+        System.out.println("Including Types : " + Arrays.toString(propertyUtil.getFileTypes()));
+
+        List<String> fileTypes = new ArrayList<>();
+        for (int i = 0; i < fileTypesStrings.length; i++) {
+            fileTypes.add(fileTypesStrings[i]);
+        }
+
+        File root = new File(rootPath);
+        List<File> barFolders = new ArrayList<File>();
+
+        for (int i = 0; i <= barCount; i++) {
+            File barFolder = new File(rootPath + "\\Bar" + i);
+            barFolder.mkdir();
+            barFolders.add(barFolder);
+        }
 
         for (File file : root.listFiles()) {
 
-            if (file.getName().endsWith(".jpg")) {
+            if (fileTypes.contains(getType(file.getName()))) {
                 if (file.getName().contains("-")) {
-                    System.out.println(root.getPath() + "\\black\\" + file.getName());
-                    file.renameTo(new File(root.getPath() + "\\black\\" + file.getName()));
+                    String barNumberString = file.getName().substring(file.getName().lastIndexOf("-") + 1, file.getName().lastIndexOf("-") + 2);
+                    int barNumber = Integer.parseInt(barNumberString);
+                    file.renameTo(new File(barFolders.get(barNumber) + "\\" + file.getName()));
                 } else {
-                    System.out.println(root.getPath() + "\\green\\" + file.getName());
-                    file.renameTo(new File(root.getPath() + "\\green\\" + file.getName()));
-                }
-            }
-        }
-    }
-
-    private static void move() {
-        File root = new File(rootName);
-        for (File folder : root.listFiles()) {
-            if (folder.isDirectory()) {
-                for (File file : folder.listFiles()) {
-                    if (isRenameTarget(file.getName())) {
-                        file.renameTo(new File(getPathWithoutFileName(folder.getPath()) + "\\" + file.getName()));
-                    }
+                    file.renameTo(new File(barFolders.get(0) + "\\" + file.getName()));
                 }
             }
         }
@@ -69,13 +75,10 @@ public class SplitFilesInFolder {
         return path.substring(0, dotPosition);
     }
 
-    private static boolean isRenameTarget(String fileName) {
-        boolean isRenameTarget = false;
-        for (String type : renameType) {
-            if (fileName.endsWith(type)) {
-                isRenameTarget = true;
-            }
-        }
-        return isRenameTarget;
+    public static void backup(String rootPath) throws IOException {
+        File originalFolder = new File(rootPath);
+        File backupFolder = new File(rootPath + " -backup");
+        backupFolder.mkdir();
+        FileUtils.copyDirectory(originalFolder, backupFolder);
     }
 }
