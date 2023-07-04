@@ -14,9 +14,9 @@ public class RenameFilesInFolder {
 //    private static String rootName = "N:\\download";
 //    private static String rootName = "F:\\CNTV\\ccccc";
 //    private static String rootName = "F:\\new";
-    private static String rootName = "D:\\6.Matches\\Basketball\\2020-22";
+    private static String rootName = "M:\\Downloads\\jian";
 
-    private static String[] renameType = {"avi", "mkv", "mp4", "rmvb", "wmv"};
+    private static String[] renameType = {"avi", "mkv", "mp4", "rmvb", "wmv", "jpg", "png"};
 
     public static void main(String[] args) {
 //        rename();

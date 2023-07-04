@@ -8,12 +8,12 @@ import java.io.File;
  */
 public class ReplaceNameInFolder {
 
-//    private static String rootName = "D:\\GameSkills\\PES\\C.S.斯匡诺尔\\I-30";
-//    private static String preText = "2029";
-//    private static String newText = "2030";
-    private static String rootName = "D:\\6.Matches\\Basketball\\2020-22";
-    private static String preText = "【天下足球网www.txzqw.me】";
-    private static String newText = "";
+    private static String rootName = "D:\\GameSkills\\PES\\C.S.斯匡诺尔\\I-44";
+    private static String preText = "2043";
+    private static String newText = "2044";
+//    private static String rootName = "D:\\6.Matches\\Basketball\\2020-22";
+//    private static String preText = "【天下足球网www.txzqw.me】";
+//    private static String newText = "";
 
     public static void main(String[] args) {
         rename(preText, newText);
