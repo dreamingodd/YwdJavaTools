@@ -66,7 +66,7 @@ public class RenameFilesInFolder {
         }
     }
 
-    private static String getType(String fileName) {
+    public static String getType(String fileName) {
         int dotPosition = fileName.lastIndexOf(".");
         return fileName.substring(dotPosition + 1);
     }
