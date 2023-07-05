@@ -52,7 +52,9 @@ public class SplitFilesInFolder {
                 if (file.getName().contains("-")) {
                     String barNumberString = file.getName().substring(file.getName().lastIndexOf("-") + 1, file.getName().lastIndexOf("-") + 2);
                     int barNumber = Integer.parseInt(barNumberString);
-                    file.renameTo(new File(barFolders.get(barNumber) + "\\" + file.getName()));
+                    String removeBarString = "-" + barNumberString;
+                    String newFileName = file.getName().replace(removeBarString, "");
+                    file.renameTo(new File(barFolders.get(barNumber) + "\\" + newFileName));
                 } else {
                     file.renameTo(new File(barFolders.get(0) + "\\" + file.getName()));
                 }
